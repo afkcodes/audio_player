@@ -2,8 +2,7 @@ import { useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
-  const playerRef = useRef(null);
-  const btnRef = useRef(null);
+  const playerRef = useRef<any>(null);
 
   const fetchAndPlay = async () => {
     const response = await fetch(
@@ -31,7 +30,6 @@ function App() {
         your browser doesn't support html audio
       </audio>
       <button
-        ref={btnRef}
         onClick={() => {
           console.log('clicked');
           fetchAndPlay();
