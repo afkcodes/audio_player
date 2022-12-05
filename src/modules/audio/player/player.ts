@@ -1,15 +1,20 @@
+let audioInstance: HTMLAudioElement;
 class Player {
   audio: HTMLAudioElement;
   constructor(source: string) {
+    if (process.env.NODE_ENV !== 'development' && audioInstance) {
+      throw new Error('Cannot create multiple audio instance');
+    }
     this.audio = new Audio(source);
+    audioInstance = this.audio;
   }
 
   set updateSource(source: string) {
     this.audio.src = source;
   }
 
-  get audioInstance() {
-    return this.audio;
+  static getAudioInstance() {
+    return audioInstance;
   }
 
   play() {

@@ -7,8 +7,8 @@ function App() {
     'https://snoidcdnems03.cdnsrv.jio.com/jiosaavn.cdn.jio.com/583/8b5425d84ca8c3f718c82c94c701a8a3_160.mp4'
   );
 
-  const event = player.getPlayerEvents();
-  console.log(event);
+  // const event = player.getPlayerEvents();
+  // console.log(event);
 
   // const fetchAndPlay = async () => {
   // const response = await fetch(
