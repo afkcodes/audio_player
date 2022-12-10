@@ -4,15 +4,16 @@ import {
 } from '../../helpers/common/validators';
 
 const listeners: any = {};
-let sum = 0;
+// let sum = 0;
 
-class changeNotifier {
+class ChangeNotifier {
   static notify(eventName: string, data: any) {
     const listenerCbs = listeners[eventName];
     if (!listenerCbs) return;
 
     if (checkValidFunction(listenerCbs) && data !== null) {
       console.log(`NOTIFYING TO EVENT : ${eventName}`);
+      console.log(`NOTIFY DATA :: ${data}`);
       listenerCbs(data);
     }
 
@@ -23,23 +24,23 @@ class changeNotifier {
   static listen(eventName: string, callback: Function) {
     if (!listeners[eventName] && checkValidFunction(callback)) {
       listeners[eventName] = callback;
-      console.log(`LISTENING TO EVENT : ${eventName}`);
+      console.log(`LISTENER ADDED FOR EVENT : ${eventName}`);
     } else {
     }
   }
 
-  static multiListen(
-    eventName: string,
-    callbackArr: Function[],
-    append: boolean = false
-  ) {
-    if (listeners[eventName] && checkValidArray(callbackArr)) {
-      listeners[eventName] = callbackArr;
-    }
-  }
+  // static multiListen(
+  //   eventName: string,
+  //   callbackArr: Function[],
+  //   append: boolean = false
+  // ) {
+  //   if (listeners[eventName] && checkValidArray(callbackArr)) {
+  //     listeners[eventName] = callbackArr;
+  //   }
+  // }
 }
 
-export default changeNotifier;
+export default ChangeNotifier;
 
 // const notifier = changeNotifier;
 

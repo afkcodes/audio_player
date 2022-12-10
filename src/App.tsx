@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Player from './modules/audio/player/player';
+import ChangeNotifier from './utils/common/notifier';
+import useNotifier from './utils/common/useNotifier.hook';
 
 function App() {
   const player = new Player(
@@ -19,6 +21,11 @@ function App() {
   // console.log(track);
   // };
 
+  const { state, notify } = useNotifier('ADD', 0, (data: any) => {
+    console.log('APP :: ', data);
+  });
+
+  console.log('RE_RENDERING');
   return (
     <div className='App'>
       Hello
@@ -29,10 +36,10 @@ function App() {
         }}>
         Play
       </button>
+      {state}
       <button
         onClick={() => {
-          console.log('paused');
-          player.pause();
+          notify('ADD', state + 1);
         }}>
         Pause
       </button>
