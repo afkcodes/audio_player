@@ -1,5 +1,8 @@
+import attachAudioEventListeners from './eventListeners';
+
 let audioInstance: HTMLAudioElement;
-class Player {
+
+class AudioPlayer {
   audio: HTMLAudioElement;
   constructor(source: string) {
     if (process.env.NODE_ENV !== 'development' && audioInstance) {
@@ -10,7 +13,7 @@ class Player {
   }
 
   set updateSource(source: string) {
-    this.audio.src = source;
+    audioInstance.src = source;
   }
 
   static getAudioInstance() {
@@ -18,32 +21,25 @@ class Player {
   }
 
   play() {
-    const isSourceAvailable: boolean = this.audio.src !== '';
-    if (isSourceAvailable) {
-      this.audio.play();
+    const isSourceAvailable: boolean = audioInstance.src !== '';
+    if (isSourceAvailable && audioInstance.HAVE_FUTURE_DATA) {
+      audioInstance.play();
     } else {
       throw new Error('Audio source must be set before playing an audio');
     }
   }
 
   pause() {
-    this.audio.pause();
+    audioInstance.pause();
   }
 
   reset() {
-    this.audio.pause();
-    this.audio.currentTime = 0;
+    audioInstance.pause();
+    audioInstance.currentTime = 0;
   }
 
-  getPlayerEvents() {
-    const events = {
-      isPlaying: true,
-      timeStamp: 0,
-    };
-    this.audio.addEventListener('timeupdate', (e) => {
-      events.timeStamp = e.timeStamp;
-    });
-    return events;
+  static attachAudioEventListeners() {
+    attachAudioEventListeners();
   }
 }
-export default Player;
+export default AudioPlayer;
