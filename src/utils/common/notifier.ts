@@ -1,7 +1,4 @@
-import {
-  checkValidArray,
-  checkValidFunction,
-} from '../../helpers/common/validators';
+import { checkValidArray, checkValidFunction } from '../../helpers/validators';
 
 const listeners: any = {};
 

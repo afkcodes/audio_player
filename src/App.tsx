@@ -1,7 +1,7 @@
 import './App.css';
 import { Test } from './components/Test';
 import AudioPlayer from './modules/audio/audio';
-import useNotifier from './utils/common/useNotifier.hook';
+import useNotifier from './utils/hooks/useNotifier.hook';
 
 function App() {
   const audio = new AudioPlayer(

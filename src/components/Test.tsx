@@ -1,5 +1,6 @@
+import { secondsToTime } from '../helpers/common';
 import AUDIO_STATE from '../modules/audio/state';
-import useNotifier from '../utils/common/useNotifier.hook';
+import useNotifier from '../utils/hooks/useNotifier.hook';
 
 export const Test = ({ num }: any) => {
   console.log('RENDERING Test');
@@ -7,7 +8,9 @@ export const Test = ({ num }: any) => {
 
   return (
     <div>
-      <pre>{JSON.stringify(audioEvents, null, 2)}</pre>
+      <p>Duration : {secondsToTime(audioEvents.CURRENT_TIME)}</p>
+      <p>PLAYING : {JSON.stringify(audioEvents.IS_PLAYING)}</p>
+      <p>PAUSED : {JSON.stringify(audioEvents.IS_PAUSED)}</p>
     </div>
   );
 };

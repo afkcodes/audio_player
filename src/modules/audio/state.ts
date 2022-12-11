@@ -1,7 +1,7 @@
 const AUDIO_STATE = {
   CURRENT_TIME: 0,
   IS_PLAYING: false,
-  IS_PAUSED: false,
+  IS_PAUSED: true,
 };
 
 export default AUDIO_STATE;

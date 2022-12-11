@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  checkValidFunction,
-  checkValidObject,
-} from '../../helpers/common/validators';
-import ChangeNotifier from './notifier';
+import { checkValidFunction, checkValidObject } from '../../helpers/validators';
+import ChangeNotifier from '../common/notifier';
 
 const useNotifier = (
   eventName: string,
