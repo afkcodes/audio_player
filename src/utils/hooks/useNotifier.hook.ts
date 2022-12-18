@@ -12,7 +12,7 @@ const useNotifier = (
   const [state, setState] = useState(initialValue);
   const [removeListener, setRemoveListener] = useState<any>(null);
   useEffect(() => {
-    const listener = notifier.listen(eventName, (data: any) => {
+    const removeEventListener = notifier.listen(eventName, (data: any) => {
       if (callback && checkValidFunction(callback)) {
         callback(data);
       }
@@ -24,9 +24,14 @@ const useNotifier = (
     });
     setRemoveListener(() => {
       return (caller = 'useNotifier') => {
-        listener(caller);
+        removeEventListener(caller);
       };
     });
+
+    return () => {
+      console.log(`REMOVING EVENT LISTENER :: USE_EFFECT ${eventName}`);
+      removeEventListener('useNotifier_return');
+    };
   }, []);
 
   return {

@@ -1,29 +1,16 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Test } from './components/Test';
-import AudioPlayer from './modules/audio/audio';
+import Home from './components/Home';
+import Test from './components/Test';
 
 function App() {
-  const audio = new AudioPlayer(
-    'https://aac.saavncdn.com/871/adc852f9b398ef7c6c406199611f20fd_160.mp4'
-  );
-
-  audio.attachAudioEventListeners();
-
+  console.log('RENDERING APP');
   return (
     <div className='App'>
-      <button
-        onClick={() => {
-          audio.play();
-        }}>
-        Play
-      </button>
-      <Test />
-      <button
-        onClick={() => {
-          audio.pause();
-        }}>
-        Pause
-      </button>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='test' element={<Test />} />
+      </Routes>
     </div>
   );
 }
