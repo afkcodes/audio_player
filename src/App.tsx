@@ -1,18 +1,16 @@
 import './App.css';
 import { Test } from './components/Test';
 import AudioPlayer from './modules/audio/audio';
-import useNotifier from './utils/hooks/useNotifier.hook';
 
 function App() {
   const audio = new AudioPlayer(
-    'https://snoidcdnems08.cdnsrv.jio.com/jiosaavn.cdn.jio.com/723/8e174f785101d131f548c537f4f024d2_160.mp4'
+    'https://aac.saavncdn.com/871/adc852f9b398ef7c6c406199611f20fd_160.mp4'
   );
 
-  AudioPlayer.attachAudioEventListeners();
+  audio.attachAudioEventListeners();
 
   return (
     <div className='App'>
-      Hello
       <button
         onClick={() => {
           audio.play();
@@ -22,7 +20,6 @@ function App() {
       <Test />
       <button
         onClick={() => {
-          // ChangeNotifier.notify('ADD', num + 1);
           audio.pause();
         }}>
         Pause

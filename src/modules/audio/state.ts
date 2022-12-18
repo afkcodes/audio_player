@@ -2,6 +2,12 @@ const AUDIO_STATE = {
   CURRENT_TIME: 0,
   IS_PLAYING: false,
   IS_PAUSED: true,
+  ENDED: true,
+  ERROR: {
+    code: null,
+    message: '',
+    type: '',
+  },
 };
 
 export default AUDIO_STATE;

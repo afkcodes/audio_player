@@ -1,4 +1,9 @@
+import { checkValidWindow } from '../../helpers/validators';
 import attachAudioEventListeners from './eventListeners';
+import {
+  attachMediaSessionHandlers,
+  updateMetaData,
+} from './mediaSessionHandler';
 
 let audioInstance: HTMLAudioElement;
 
@@ -23,7 +28,46 @@ class AudioPlayer {
   play() {
     const isSourceAvailable: boolean = audioInstance.src !== '';
     if (isSourceAvailable && audioInstance.HAVE_FUTURE_DATA) {
-      audioInstance.play();
+      audioInstance.play().then((_) => {
+        updateMetaData({
+          title: 'Rasiya',
+          artist: 'Pritam, Amitabh Bhattacharya',
+          album: 'Brahmashtra',
+          artwork: [
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '96x96',
+              type: 'image/png',
+            },
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '128x128',
+              type: 'image/png',
+            },
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '256x256',
+              type: 'image/png',
+            },
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '384x384',
+              type: 'image/png',
+            },
+            {
+              src: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        });
+      });
+      attachMediaSessionHandlers();
     } else {
       throw new Error('Audio source must be set before playing an audio');
     }
@@ -38,8 +82,23 @@ class AudioPlayer {
     audioInstance.currentTime = 0;
   }
 
-  static attachAudioEventListeners() {
+  attachAudioEventListeners() {
     attachAudioEventListeners();
+  }
+
+  static updateMetaData(data: any) {
+    if (checkValidWindow) {
+      updateMetaData(data);
+    } else {
+      throw new Error('window not found or undefined');
+    }
+  }
+  static attachMediaSessionHandlers() {
+    if (checkValidWindow) {
+      attachMediaSessionHandlers();
+    } else {
+      throw new Error('window not found or undefined');
+    }
   }
 }
 export default AudioPlayer;

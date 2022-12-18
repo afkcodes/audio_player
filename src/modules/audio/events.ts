@@ -1,4 +1,4 @@
-const PLAYER_EVENTS = Object.freeze({
+export const PLAYER_EVENTS = Object.freeze({
   ABORT: 'abort',
   TIME_UPDATE: 'timeupdate',
   CAN_PLAY: 'canplay',
@@ -23,4 +23,9 @@ const PLAYER_EVENTS = Object.freeze({
   ERROR: 'error',
 });
 
-export default PLAYER_EVENTS;
+export const ERROR_EVENTS: any = Object.freeze({
+  1: 'MEDIA_ERR_ABORTED',
+  3: 'MEDIA_ERR_DECODE',
+  2: 'MEDIA_ERR_NETWORK',
+  4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
+});
