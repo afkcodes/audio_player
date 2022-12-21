@@ -13,7 +13,7 @@ class ChangeNotifier {
 
     if (checkValidFunction(listenerCbs as Function) && data !== null) {
       console.log(`NOTIFYING TO EVENT : ${eventName} - CALLER : ${caller}`);
-      console.log(`NOTIFY DATA :: ${JSON.stringify(data, null, 2)}`);
+      // console.log(`NOTIFY DATA :: ${JSON.stringify(data, null, 2)}`);
       listenerCbs(data);
     }
 
@@ -33,8 +33,9 @@ class ChangeNotifier {
     }
     return (caller: string) => {
       if (listeners[eventName]) {
-        console.log(`CALLER : ${caller}`);
-        console.log(`REMOVING EVENT LISTENER FOR EVENT : ${eventName}`);
+        console.log(
+          `REMOVING EVENT LISTENER FOR EVENT : ${eventName} - CALLER : ${caller}`
+        );
         delete listeners[eventName];
       } else {
         console.log(`EVENT NOT FOUND : ${eventName}`);
