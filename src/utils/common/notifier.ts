@@ -1,6 +1,7 @@
 import { checkValidArray, checkValidFunction } from '../../helpers/validators';
 
 const listeners: any = {};
+export const notifierState: any = {};
 
 class ChangeNotifier {
   static notify(
@@ -9,12 +10,14 @@ class ChangeNotifier {
     caller: string = 'notifier_default'
   ) {
     const listenerCbs = listeners[eventName];
+
     if (!listenerCbs) return;
 
     if (checkValidFunction(listenerCbs as Function) && data !== null) {
       console.log(`NOTIFYING TO EVENT : ${eventName} - CALLER : ${caller}`);
       // console.log(`NOTIFY DATA :: ${JSON.stringify(data, null, 2)}`);
-      listenerCbs(data);
+      notifierState[eventName] = { ...notifierState[eventName], ...data };
+      listenerCbs(notifierState[eventName]);
     }
 
     if (checkValidArray(listenerCbs as Function[]) && data !== null) {
@@ -24,19 +27,28 @@ class ChangeNotifier {
     }
   }
 
-  static listen(eventName: string, callback: Function) {
+  static listen(eventName: string, callback: Function, state = {}) {
     if (!listeners[eventName] && checkValidFunction(callback)) {
       listeners[eventName] = callback;
+      if (!notifierState[eventName]) {
+        notifierState[eventName] = state;
+      }
       console.log(`LISTENER ADDED FOR EVENT : ${eventName}`);
     } else {
       console.log(`FAILED TO ADD EVENT FOR : ${eventName}`);
     }
-    return (caller: string) => {
+    return (caller: string, resetState: boolean) => {
       if (listeners[eventName]) {
         console.log(
           `REMOVING EVENT LISTENER FOR EVENT : ${eventName} - CALLER : ${caller}`
         );
         delete listeners[eventName];
+        if (resetState && notifierState[eventName]) {
+          console.log(
+            `RESETTING STATE FOR EVENT : ${eventName} - CALLER : ${caller}`
+          );
+          delete notifierState[eventName];
+        }
       } else {
         console.log(`EVENT NOT FOUND : ${eventName}`);
       }
