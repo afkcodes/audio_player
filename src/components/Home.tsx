@@ -6,7 +6,7 @@ import AUDIO_STATE from '../modules/audio/state';
 import useNotifier from '../utils/hooks/useNotifier.hook';
 
 const audio = new AudioPlayer(
-  'https://aac.saavncdn.com/871/adc852f9b398ef7c6c406199611f20fd_160.mp4'
+  'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
 );
 audio.attachAudioEventListeners();
 

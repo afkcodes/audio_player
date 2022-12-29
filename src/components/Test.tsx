@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { secondsToTime } from '../helpers/common';
+import AudioPlayer from '../modules/audio/audio';
 import AUDIO_STATE from '../modules/audio/state';
 import useNotifier from '../utils/hooks/useNotifier.hook';
+
+const audio = AudioPlayer.getAudioInstance();
 
 const Test = () => {
   const {
@@ -10,6 +13,19 @@ const Test = () => {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          audio.play();
+        }}>
+        Play
+      </button>
+      <button
+        onClick={() => {
+          audio.pause();
+        }}>
+        Pause
+      </button>
+
       <p>
         DURATION : <span>{secondsToTime(CURRENT_TIME)}</span>
       </p>
