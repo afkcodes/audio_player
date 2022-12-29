@@ -10,13 +10,17 @@ const useNotifier = (
   resetState: boolean = false,
   callback?: Function
 ) => {
-  if (!notifierState[eventName] && !initialValue) {
+  if (notifierState[eventName] == undefined && initialValue == undefined) {
     throw new Error('Cannot initialize state without initial value');
   }
-  const [state, setState] = useState(
-    notifierState[eventName] ? notifierState[eventName] : initialValue
-  );
+
+  const baseValue = notifierState[eventName]
+    ? notifierState[eventName]
+    : initialValue;
+
+  const [state, setState] = useState(baseValue);
   const [removeListener, setRemoveListener] = useState<any>(null);
+
   useEffect(() => {
     const removeEventListener = notifier.listen(
       eventName,
@@ -30,14 +34,14 @@ const useNotifier = (
           setState(data);
         }
       },
-      notifierState[eventName] ? notifierState[eventName] : initialValue
+      baseValue
     );
 
     setState(notifierState[eventName]);
 
     setRemoveListener(() => {
       return (caller = 'useNotifier') => {
-        removeEventListener(caller, false);
+        removeEventListener(caller, resetState);
       };
     });
 
