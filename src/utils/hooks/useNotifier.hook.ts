@@ -29,7 +29,7 @@ const useNotifier = (
           callback(data);
         }
         if (checkValidObject(data)) {
-          setState({ ...data });
+          setState({ ...state, ...data });
         } else {
           setState(data);
         }
