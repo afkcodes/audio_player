@@ -9,6 +9,7 @@ const audio = new AudioPlayer(
   'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
 );
 audio.attachAudioEventListeners();
+const audioInstance = AudioPlayer.getAudioInstance();
 
 const Progress = () => {
   const {
@@ -33,7 +34,7 @@ const Progress = () => {
       </button>
       <div className='flex flex-col justify-center items-center gap-4'>
         <p>DURATION : {secondsToTime(CURRENT_TIME)}</p>
-        <p>DURATION : {secondsToTime(PROGRESS)}</p>
+        <p>DURATION : {secondsToTime(audioInstance.duration)}</p>
         <Link
           className='bg-slate-700 px-4 py-2 text-white rounded-md'
           to={'test'}>

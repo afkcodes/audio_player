@@ -25,9 +25,9 @@ const attachAudioEventListeners = () => {
       'AUDIO_EVENTS',
       {
         CURRENT_TIME: audioInstance.currentTime,
-        IS_PLAYING: true,
-        IS_PAUSED: false,
-        ENDED: false,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
         PROGRESS: e.timeStamp,
       },
       PLAYER_EVENTS.PROGRESS
@@ -39,9 +39,9 @@ const attachAudioEventListeners = () => {
       'AUDIO_EVENTS',
       {
         CURRENT_TIME: audioInstance.currentTime,
-        IS_PLAYING: true,
-        IS_PAUSED: false,
-        ENDED: false,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
       },
       PLAYER_EVENTS.PLAYING
     );
@@ -51,10 +51,10 @@ const attachAudioEventListeners = () => {
     notifier.notify(
       'AUDIO_EVENTS',
       {
-        IS_PLAYING: false,
         CURRENT_TIME: audioInstance.currentTime,
-        IS_PAUSED: true,
-        ENDED: false,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
       },
       PLAYER_EVENTS.PAUSE
     );
@@ -62,10 +62,10 @@ const attachAudioEventListeners = () => {
 
   audioInstance.addEventListener(PLAYER_EVENTS.ENDED, (e: any) => {
     notifier.notify('AUDIO_EVENTS', {
-      IS_PLAYING: false,
       CURRENT_TIME: audioInstance.currentTime,
-      IS_PAUSED: false,
-      ENDED: true,
+      IS_PLAYING: !audioInstance.paused,
+      IS_PAUSED: audioInstance.paused,
+      ENDED: audioInstance.ended,
     });
   });
 
@@ -75,10 +75,10 @@ const attachAudioEventListeners = () => {
     notifier.notify(
       'AUDIO_EVENTS',
       {
-        IS_PLAYING: false,
         CURRENT_TIME: audioInstance.currentTime,
-        IS_PAUSED: false,
-        ENDED: true,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
         ERROR: error,
       },
       PLAYER_EVENTS.ERROR
