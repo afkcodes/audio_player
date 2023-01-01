@@ -8,6 +8,8 @@ const AUDIO_STATE = {
     message: '',
     type: '',
   },
+  PROGRESS: 0,
+  VOLUME: 50,
 };
 
 export default AUDIO_STATE;

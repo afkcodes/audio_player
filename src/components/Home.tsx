@@ -1,38 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { secondsToTime } from '../helpers/common';
-import AudioPlayer from '../modules/audio/audio';
-import AUDIO_STATE from '../modules/audio/state';
-import useNotifier from '../utils/hooks/useNotifier.hook';
-
-const audio = new AudioPlayer(
-  'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
-);
-audio.attachAudioEventListeners();
+import { notifierState } from '../utils/common/notifier';
+import Progress from './Progress';
+import ProgressIcon from './ProgressIcon';
+import Volume from './Volume';
 
 const Home = () => {
-  const {
-    state: { CURRENT_TIME },
-  } = useNotifier('AUDIO_EVENTS', AUDIO_STATE);
-
+  console.log(notifierState);
   return (
-    <div>
-      <button
-        onClick={() => {
-          audio.play();
-        }}>
-        Play
-      </button>
-      <button
-        onClick={() => {
-          audio.pause();
-        }}>
-        Pause
-      </button>
-      <div>
-        <p>DURATION : {secondsToTime(CURRENT_TIME)}</p>
-        <Link to={'test'}>GO TO TEST</Link>
+    <div className='flex justify-center items-center h-screen bg-black text-gray-300'>
+      <div className='flex flex-col justify-center items-center gap-4'>
+        <ProgressIcon size='MD' />
+        <Volume />
       </div>
+      {/* <Progress /> */}
     </div>
   );
 };

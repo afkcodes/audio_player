@@ -1,5 +1,4 @@
-import ChangeNotifier from '../../utils/common/notifier';
-import AudioPlayer from './audio';
+import ChangeNotifier, { notifierState } from '../../utils/common/notifier';
 import Player from './audio';
 import { audioErrorHandler } from './errorHandler';
 import { PLAYER_EVENTS } from './events';
@@ -19,58 +18,71 @@ const attachAudioEventListeners = () => {
       },
       PLAYER_EVENTS.TIME_UPDATE
     );
-    // navigator.mediaSession.setPositionState({
-    //   duration: audioInstance.duration,
-    //   playbackRate: audioInstance.playbackRate,
-    //   position: audioInstance.currentTime,
-    // });
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PROGRESS, (e: any) => {
-    // console.log(e);
+    notifier.notify(
+      'AUDIO_EVENTS',
+      {
+        CURRENT_TIME: audioInstance.currentTime,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
+        PROGRESS: e.timeStamp,
+      },
+      PLAYER_EVENTS.PROGRESS
+    );
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PLAYING, (e: any) => {
-    // console.log('CALLING PLAYING', e);
-
-    notifier.notify('AUDIO_EVENTS', {
-      CURRENT_TIME: audioInstance.currentTime,
-      IS_PLAYING: true,
-      IS_PAUSED: false,
-      ENDED: false,
-    });
+    notifier.notify(
+      'AUDIO_EVENTS',
+      {
+        CURRENT_TIME: audioInstance.currentTime,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
+      },
+      PLAYER_EVENTS.PLAYING
+    );
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PAUSE, (e: any) => {
-    // console.log('CALLING PAUSE', e);
-    notifier.notify('AUDIO_EVENTS', {
-      IS_PLAYING: false,
-      CURRENT_TIME: audioInstance.currentTime,
-      IS_PAUSED: true,
-      ENDED: false,
-    });
+    notifier.notify(
+      'AUDIO_EVENTS',
+      {
+        CURRENT_TIME: audioInstance.currentTime,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
+      },
+      PLAYER_EVENTS.PAUSE
+    );
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.ENDED, (e: any) => {
-    // console.log('CALLING PAUSE', e);
     notifier.notify('AUDIO_EVENTS', {
-      IS_PLAYING: false,
       CURRENT_TIME: audioInstance.currentTime,
-      IS_PAUSED: false,
-      ENDED: true,
+      IS_PLAYING: !audioInstance.paused,
+      IS_PAUSED: audioInstance.paused,
+      ENDED: audioInstance.ended,
     });
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.ERROR, (e: any) => {
     const error = audioErrorHandler(e);
 
-    notifier.notify('AUDIO_EVENTS', {
-      IS_PLAYING: false,
-      CURRENT_TIME: audioInstance.currentTime,
-      IS_PAUSED: false,
-      ENDED: true,
-      ERROR: error,
-    });
+    notifier.notify(
+      'AUDIO_EVENTS',
+      {
+        CURRENT_TIME: audioInstance.currentTime,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
+        ERROR: error,
+      },
+      PLAYER_EVENTS.ERROR
+    );
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.LOADED_META_DATA, (e: any) => {
@@ -81,8 +93,15 @@ const attachAudioEventListeners = () => {
     });
   });
 
-  audioInstance.addEventListener(PLAYER_EVENTS.LOADED_META_DATA, (e: any) => {
-    console.log('LOADED DATA');
+  audioInstance.addEventListener(PLAYER_EVENTS.VOLUME_CHANGE, (e: any) => {
+    notifier.notify(
+      'VOLUME_CHANGE',
+      (notifierState['AUDIO_EVENTS'] = {
+        ...notifierState['AUDIO_EVENTS'],
+        VOLUME: Math.round(audioInstance.volume * 100),
+      }),
+      PLAYER_EVENTS.VOLUME_CHANGE
+    );
   });
 };
 

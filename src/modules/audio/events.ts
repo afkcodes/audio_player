@@ -29,3 +29,11 @@ export const ERROR_EVENTS: any = Object.freeze({
   2: 'MEDIA_ERR_NETWORK',
   4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
 });
+
+// Ref: https://html.spec.whatwg.org/multipage/media.html#network-states
+export const NETWORK_STATE: any = Object.freeze({
+  0: 'NETWORK_EMPTY',
+  1: 'NETWORK_IDLE',
+  2: 'NETWORK_LOADING',
+  3: 'NETWORK_NO_SOURCE',
+});
