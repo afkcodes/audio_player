@@ -1,11 +1,11 @@
-import { RiPlayFill, RiPauseFill } from 'react-icons/ri';
+import { RiPlayFill, RiPauseMiniFill } from 'react-icons/ri';
 import AudioPlayer from '../modules/audio/audio';
 import AUDIO_STATE from '../modules/audio/state';
 import { metaData } from '../utils/common/data';
 import useNotifier from '../utils/hooks/useNotifier.hook';
 
 const audio = new AudioPlayer(
-  'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
+  'https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_320.mp4'
 );
 audio.attachAudioEventListeners();
 const audioInstance = AudioPlayer.getAudioInstance();
@@ -24,13 +24,13 @@ const sizeConfig: any = {
   LG: {
     outer: 'h-16 w-16',
     inner: 'after:h-14 after:w-14',
-    icon: 42,
+    icon: 48,
   },
 };
 
-const ProgressIcon = ({ size = 'MD' }) => {
+const ProgressIcon = ({ size = 'LG' }) => {
   const {
-    state: { CURRENT_TIME, IS_PLAYING },
+    state: { CURRENT_TIME, IS_PLAYING, ENDED },
   } = useNotifier('AUDIO_EVENTS', AUDIO_STATE);
 
   const duration = Math.round(audioInstance?.duration) || 0;
@@ -49,17 +49,19 @@ const ProgressIcon = ({ size = 'MD' }) => {
   return (
     <button
       style={{
-        backgroundImage: `conic-gradient(#d80000 ${durationPercent}%, lightgrey 0%)`,
+        backgroundImage: `conic-gradient(#d80000 ${durationPercent}%, ${
+          IS_PLAYING || (durationPercent > 0 && !ENDED) ? 'lightgrey' : 'white'
+        } ${durationPercent}%)`,
       }}
       onClick={() => {
         handlePlay(metaData);
       }}
       className={`
-       ${sizeConfig[size].outer} bg-gray-200 flex justify-center items-center rounded-full relative cursor-pointer after:transition-all after:duration-300 after:ease-in-out
-      after:content-[''] after:absolute after:top-1/2 after:left-1/2 ${sizeConfig[size].inner} after:bg-gray-200 after:rounded-full after:-translate-x-1/2 after:-translate-y-1/2
+       ${sizeConfig[size].outer} bg-white flex justify-center items-center rounded-full relative cursor-pointer after:transition-all after:duration-300 after:ease-in-out
+      after:content-[''] after:absolute after:top-1/2 after:left-1/2 ${sizeConfig[size].inner} after:bg-white after:rounded-full after:-translate-x-1/2 after:-translate-y-1/2
       `}>
       {IS_PLAYING ? (
-        <RiPauseFill
+        <RiPauseMiniFill
           size={sizeConfig[size].icon}
           color='#d80000'
           className='z-10'
