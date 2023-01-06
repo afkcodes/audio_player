@@ -5,8 +5,10 @@ import ChangeNotifier, { notifierState } from '../common/notifier';
 const notifier = ChangeNotifier;
 
 const useNotifier = (
+  id: number = 0,
   eventName: string,
-  initialValue?: any,
+  initialValue?: any | null,
+  shouldDestroyListener: boolean = false,
   resetState: boolean = false,
   callback?: Function
 ) => {
@@ -46,7 +48,9 @@ const useNotifier = (
     });
 
     return () => {
-      removeEventListener('useNotifier_return', resetState);
+      if (shouldDestroyListener) {
+        removeEventListener('useNotifier_return', resetState);
+      }
     };
   }, []);
 
