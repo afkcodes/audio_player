@@ -49,7 +49,7 @@ const ProgressIndicator = ({ size = 'LG' }) => {
 
   return (
     <button
-      style={{ '--progress': durationPercent } as any}
+      style={{ '--progress': ENDED ? 0 : durationPercent } as any}
       onClick={() => {
         handlePlay(metaData);
       }}
