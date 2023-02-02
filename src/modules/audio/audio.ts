@@ -1,5 +1,4 @@
 import { checkValidWindow } from '../../helpers/validators';
-import { metaData } from '../../utils/common/data';
 import attachAudioEventListeners from './eventListeners';
 import {
   attachMediaSessionHandlers,
@@ -26,9 +25,11 @@ class AudioPlayer {
     return audioInstance;
   }
 
-  play(metaData?: any) {
+  play(source: string, metaData?: any) {
     const isSourceAvailable: boolean = audioInstance.src !== '';
     if (isSourceAvailable && audioInstance.HAVE_FUTURE_DATA) {
+      this.reset(source);
+      audioInstance.load();
       audioInstance.play().then((_) => {
         if (metaData !== undefined) {
           updateMetaData(metaData);
@@ -46,9 +47,12 @@ class AudioPlayer {
     audioInstance.pause();
   }
 
-  reset() {
+  reset(source?: string) {
     audioInstance.pause();
     audioInstance.currentTime = 0;
+    if (source) {
+      audioInstance.src = source;
+    }
   }
 
   attachAudioEventListeners() {

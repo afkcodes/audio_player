@@ -1,18 +1,33 @@
-import { notifierState } from '../utils/common/notifier';
-import ProgressIcon from './ProgressIcon';
-import ProgressIndicator from './ProgressIndicator';
-import Volume from './Volume';
+import { useEffect, useState } from 'react';
+import PlayCard from './PlayCard';
+
+const getData = async () => {
+  const res = await fetch(
+    'https://api.napster.com/v2.1/tracks/top?apikey=ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm'
+  );
+  const data = await res.json();
+  return data;
+};
 
 const Home = () => {
-  console.log(notifierState);
+  const [songData, setSongData] = useState<any[]>([]);
+
+  useEffect(() => {
+    getData().then((data) => {
+      setSongData(data.tracks);
+    });
+  }, []);
+
   return (
-    <div className='flex justify-center items-center h-screen bg-black text-gray-300'>
+    <div className='flex bg-black text-gray-300'>
       <div className='flex flex-col justify-center items-center gap-4'>
         {/* <ProgressIcon size='LG' /> */}
-        <ProgressIndicator />
-        <Volume />
+        {/* <ProgressIndicator /> */}
+        {/* <Volume /> */}
+        {songData.map((el: any) => (
+          <PlayCard data={el} key={el.id} />
+        ))}
       </div>
-      {/* <Progress /> */}
     </div>
   );
 };
