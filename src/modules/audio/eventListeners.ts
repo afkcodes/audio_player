@@ -1,5 +1,4 @@
 import ChangeNotifier from '../../utils/common/notifier';
-import AudioPlayer from './audio';
 import Player from './audio';
 import { audioErrorHandler } from './errorHandler';
 import { PLAYER_EVENTS } from './events';
@@ -27,7 +26,13 @@ const attachAudioEventListeners = () => {
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PROGRESS, (e: any) => {
-    // console.log(e);
+    notifier.notify('AUDIO_EVENTS', {
+      CURRENT_TIME: audioInstance.currentTime,
+      IS_PLAYING: true,
+      IS_PAUSED: false,
+      ENDED: false,
+      PROGRESS: e.timeStamp,
+    });
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PLAYING, (e: any) => {
