@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { checkValidFunction } from '../../helpers/validators';
+import { checkValidFunction, checkValidObject } from '../../helpers/validators';
 import ChangeNotifier, { notifierState } from '../common/notifier';
 
 const notifier = ChangeNotifier;
@@ -19,9 +19,15 @@ const useListener = (
     const removeEventListener = notifier.listen(
       eventName,
       (data: any) => {
-        setState(data);
         if (callback && checkValidFunction(callback)) {
-          callback();
+          callback(data);
+        }
+        if (checkValidObject(data)) {
+          setState((prevData: any) => {
+            return { ...prevData, ...data };
+          });
+        } else {
+          setState(data);
         }
       },
       state

@@ -28,7 +28,7 @@ const attachAudioEventListeners = () => {
   audioInstance.addEventListener(PLAYER_EVENTS.PROGRESS, (e: any) => {
     notifier.notify('AUDIO_EVENTS', {
       CURRENT_TIME: audioInstance.currentTime,
-      IS_PLAYING: true,
+      IS_PLAYING: false,
       IS_PAUSED: false,
       ENDED: false,
       PROGRESS: e.timeStamp,
