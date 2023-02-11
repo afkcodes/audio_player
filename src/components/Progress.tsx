@@ -6,28 +6,22 @@ import useListener from '../utils/hooks/useListener.hook';
 import useNotifier from '../utils/hooks/useNotifier.hook';
 
 const audio = new AudioPlayer(
-  'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
+  'https://aac.saavncdn.com/807/f5a2929f50aa073c95017522ab406717_320.mp4'
 );
 audio.attachAudioEventListeners();
 
 const Progress = () => {
   const state = useListener('AUDIO_EVENTS', AUDIO_STATE);
+  const audioInstance = AudioPlayer.getAudioInstance();
 
   return (
     <div className='flex flex-col justify-center items-center gap-4'>
       <button
         onClick={() => {
-          audio.play();
+          audioInstance.paused ? audio.play() : audio.pause();
         }}
         className='bg-slate-700 px-4 py-2 text-white rounded-md'>
-        Play
-      </button>
-      <button
-        onClick={() => {
-          audio.pause();
-        }}
-        className='bg-slate-700 px-4 py-2 text-white rounded-md'>
-        Pause
+        {audioInstance.paused ? 'PLAY' : 'PAUSE'}
       </button>
       <div className='flex flex-col justify-center items-center gap-4'>
         <p>DURATION : {secondsToTime(state.CURRENT_TIME)}</p>

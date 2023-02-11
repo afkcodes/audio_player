@@ -107,16 +107,6 @@ class ChangeNotifier {
       }
     };
   }
-
-  // static multiListen(
-  //   eventName: string,
-  //   callbackArr: Function[],
-  //   append: boolean = false
-  // ) {
-  //   if (listeners[eventName] && checkValidArray(callbackArr)) {
-  //     listeners[eventName] = callbackArr;
-  //   }
-  // }
 }
 
 export default ChangeNotifier;
