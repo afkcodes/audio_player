@@ -17,7 +17,7 @@ const Progress = () => {
     <div className='flex flex-col justify-center items-center gap-4'>
       <button
         onClick={() => {
-          audioInstance.paused ? audio.play() : audio.pause();
+          audioInstance.paused ? audioInstance.play() : audioInstance.pause();
         }}
         className='bg-slate-700 px-4 py-2 text-white rounded-md'>
         {audioInstance.paused ? 'PLAY' : 'PAUSE'}
