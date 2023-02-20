@@ -43,9 +43,17 @@ class ChangeNotifier {
       listenerCbs(notifierState[eventName]);
     }
 
-    if (checkValidArray(listenerCbs as Function[]) && data !== null) {
+    if (
+      checkValidArray(Array.from(listenerCbs) as Function[]) &&
+      data !== null
+    ) {
+      if (checkValidObject(data)) {
+        notifierState[eventName] = { ...notifierState[eventName], ...data };
+      } else {
+        notifierState[eventName] = data;
+      }
       listenerCbs.forEach((cb: Function) => {
-        cb(data);
+        cb(notifierState[eventName]);
       });
     }
   }
@@ -59,15 +67,19 @@ class ChangeNotifier {
    * @param state - default state for each event to which it listens to
    * @returns - a method that unsubscribe the events and basically deletes it
    */
+
   static listen(eventName: string, callback: Function, state = {}) {
     if (!listeners[eventName] && checkValidFunction(callback)) {
-      listeners[eventName] = callback;
       if (!notifierState[eventName]) {
         notifierState[eventName] = state;
       }
-      console.log(`LISTENER ADDED FOR EVENT : ${eventName}`);
+      listeners[eventName] = new Set().add(callback);
     } else {
-      console.log(`FAILED TO ADD EVENT FOR : ${eventName}`);
+      let callbackArr: any = [...listeners[eventName]];
+      listeners[eventName].forEach((cb: any) => {
+        callbackArr.push(callback);
+      });
+      listeners[eventName] = new Set(callbackArr);
     }
 
     /**
@@ -95,29 +107,6 @@ class ChangeNotifier {
       }
     };
   }
-
-  static multiListen(
-    eventName: string,
-    callbackArr: Function[],
-    append: boolean = false
-  ) {
-    if (listeners[eventName] && checkValidArray(callbackArr)) {
-      listeners[eventName] = callbackArr;
-    }
-  }
 }
 
 export default ChangeNotifier;
-
-// const notifier = changeNotifier;
-
-// notifier.listen('ADD', (num: number) => {
-//   sum = sum + num;
-//   console.log(sum);
-// });
-
-// notifier.notify('ADD', 0);
-// notifier.notify('ADD', 1);
-// notifier.notify('ADD', 2);
-// notifier.notify('ADD', 3);
-// notifier.notify('ADD', 4);

@@ -21,17 +21,13 @@ const attachAudioEventListeners = () => {
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PROGRESS, (e: any) => {
-    notifier.notify(
-      'AUDIO_EVENTS',
-      {
-        CURRENT_TIME: audioInstance.currentTime,
-        IS_PLAYING: !audioInstance.paused,
-        IS_PAUSED: audioInstance.paused,
-        ENDED: audioInstance.ended,
-        PROGRESS: e.timeStamp,
-      },
-      PLAYER_EVENTS.PROGRESS
-    );
+    notifier.notify('AUDIO_EVENTS', {
+      CURRENT_TIME: audioInstance.currentTime,
+      IS_PLAYING: true,
+      IS_PAUSED: false,
+      ENDED: false,
+      PROGRESS: e.timeStamp,
+    });
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PLAYING, (e: any) => {

@@ -2,39 +2,29 @@ import { Link } from 'react-router-dom';
 import { secondsToTime } from '../helpers/common';
 import AudioPlayer from '../modules/audio/audio';
 import AUDIO_STATE from '../modules/audio/state';
-import { metaData } from '../utils/common/data';
-import useNotifier from '../utils/hooks/useNotifier.hook';
+import useListener from '../utils/hooks/useListener.hook';
 
 const audio = new AudioPlayer(
-  'https://aac.saavncdn.com/784/5346d8f2a5b23175eba11713420ec5e5_320.mp4'
+  'https://aac.saavncdn.com/807/f5a2929f50aa073c95017522ab406717_320.mp4'
 );
 audio.attachAudioEventListeners();
-const audioInstance = AudioPlayer.getAudioInstance();
 
 const Progress = () => {
-  const {
-    state: { CURRENT_TIME, PROGRESS },
-  } = useNotifier('AUDIO_EVENTS', AUDIO_STATE);
+  const state = useListener('AUDIO_EVENTS', AUDIO_STATE);
+  const audioInstance = AudioPlayer.getAudioInstance();
 
   return (
     <div className='flex flex-col justify-center items-center gap-4'>
       <button
         onClick={() => {
-          audio.play(metaData);
+          audioInstance.paused ? audio.play() : audio.pause();
         }}
         className='bg-slate-700 px-4 py-2 text-white rounded-md'>
-        Play
-      </button>
-      <button
-        onClick={() => {
-          audio.pause();
-        }}
-        className='bg-slate-700 px-4 py-2 text-white rounded-md'>
-        Pause
+        {audioInstance.paused ? 'PLAY' : 'PAUSE'}
       </button>
       <div className='flex flex-col justify-center items-center gap-4'>
-        <p>DURATION : {secondsToTime(CURRENT_TIME)}</p>
-        <p>DURATION : {secondsToTime(audioInstance.duration)}</p>
+        <p>DURATION : {secondsToTime(state.CURRENT_TIME)}</p>
+        <p>DURATION : {secondsToTime(state.PROGRESS)}</p>
         <Link
           className='bg-slate-700 px-4 py-2 text-white rounded-md'
           to={'test'}>
