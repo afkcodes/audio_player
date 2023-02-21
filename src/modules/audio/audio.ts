@@ -1,47 +1,46 @@
-import { checkValidWindow } from '../../helpers/validators';
+import { checkValidObject, checkValidWindow } from '../../helpers/validators';
 import attachAudioEventListeners from './eventListeners';
 import {
   attachMediaSessionHandlers,
   updateMetaData
 } from './mediaSessionHandler';
+import { MediaTrackType } from './types';
 
 let audioInstance: HTMLAudioElement;
 
 class AudioPlayer {
-  audio: HTMLAudioElement;
+  private _audio: HTMLAudioElement;
+  private _currentTrack: MediaTrackType | undefined;
   constructor(source: string) {
     if (process.env.NODE_ENV !== 'development' && audioInstance) {
       throw new Error('Cannot create multiple audio instance');
     }
-    this.audio = new Audio(source);
-    audioInstance = this.audio;
+    this._audio = new Audio(source)
+    audioInstance = this._audio;
+  }
+
+  private _updateSource(source: string) {
+    this.reset()
+    audioInstance.src = source;
   }
 
   static getAudioInstance() {
     return audioInstance;
   }
 
-  updateSource(source: string) {
-    audioInstance.src = source;
+
+  addMedia(media: MediaTrackType) {
+    if (checkValidObject(media)) {
+      this._updateSource(media?.source);
+      this._updateMetaData(media);
+      this._currentTrack = media;
+    }
   }
 
-  addMedia(source: string) {
-    this.reset();
-    this.updateSource(source);
-  }
-
-  play(source: string, metaData?: any) {
-    this.reset();
-    this.updateSource(source);
+  play() {
     const isSourceAvailable: boolean = audioInstance.src !== '';
     if (isSourceAvailable && audioInstance.HAVE_FUTURE_DATA) {
-      audioInstance.play().then((_) => {
-        if (metaData !== undefined) {
-          updateMetaData(metaData);
-        } else {
-          console.error('Unable to set MetaData as not MetaData was supplied');
-        }
-      });
+      audioInstance.play()
       attachMediaSessionHandlers();
     } else {
       throw new Error('Audio source must be set before playing an audio');
@@ -65,19 +64,32 @@ class AudioPlayer {
     attachAudioEventListeners();
   }
 
-  static updateMetaData(metaData: any) {
-    if (checkValidWindow) {
+  private _updateMetaData(metaData: any) {
+    if (checkValidObject(metaData)) {
       updateMetaData(metaData);
     } else {
       throw new Error('window not found or undefined');
     }
   }
-  static attachMediaSessionHandlers() {
+
+  attachMediaSessionHandlers() {
     if (checkValidWindow) {
       attachMediaSessionHandlers();
     } else {
       throw new Error('window not found or undefined');
     }
   }
+
+  get currentMediaTrack() {
+    return this._currentTrack
+  }
 }
 export default AudioPlayer;
+
+// .then((_) => {
+//   if (metaData !== undefined) {
+//     updateMetaData(metaData);
+//   } else {
+//     console.error('Unable to set MetaData as not MetaData was supplied');
+//   }
+// });

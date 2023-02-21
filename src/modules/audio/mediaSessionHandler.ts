@@ -1,8 +1,9 @@
+import { metaDataCreator } from '../../helpers/common';
 import AudioPlayer from './audio';
 
 export const updateMetaData = (data: any) => {
   if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata(data);
+    navigator.mediaSession.metadata = new MediaMetadata(metaDataCreator(data));
   }
 };
 
