@@ -26,7 +26,7 @@ export const audioErrorHandler = (e: any) => {
       error.type = ERROR_EVENTS[e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED];
       console.error(
         `The audio cannot not be loaded, either because the server or network failed
-         or because the format is not supported.`
+        or because the format is not supported.`
       );
       break;
     default:
