@@ -32,7 +32,6 @@ class AudioPlayer {
   addMedia(media: MediaTrackType) {
     if (checkValidObject(media)) {
       this._updateSource(media?.source);
-      this._updateMetaData(media);
       this._currentTrack = media;
     }
   }
@@ -40,7 +39,9 @@ class AudioPlayer {
   play() {
     const isSourceAvailable: boolean = audioInstance.src !== '';
     if (isSourceAvailable && audioInstance.HAVE_FUTURE_DATA) {
-      audioInstance.play()
+      audioInstance.play().then((_) => {
+        this._updateMetaData(this._currentTrack);
+      })
       attachMediaSessionHandlers();
     } else {
       throw new Error('Audio source must be set before playing an audio');
@@ -85,11 +86,3 @@ class AudioPlayer {
   }
 }
 export default AudioPlayer;
-
-// .then((_) => {
-//   if (metaData !== undefined) {
-//     updateMetaData(metaData);
-//   } else {
-//     console.error('Unable to set MetaData as not MetaData was supplied');
-//   }
-// });

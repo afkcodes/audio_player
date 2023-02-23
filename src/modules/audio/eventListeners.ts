@@ -82,11 +82,22 @@ const attachAudioEventListeners = () => {
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.LOADED_META_DATA, (e: any) => {
+
     navigator.mediaSession.setPositionState({
       duration: audioInstance.duration,
       playbackRate: audioInstance.playbackRate,
       position: audioInstance.currentTime,
     });
+    notifier.notify(
+      'AUDIO_EVENTS',
+      {
+        DURATION: audioInstance.duration,
+        IS_PLAYING: !audioInstance.paused,
+        IS_PAUSED: audioInstance.paused,
+        ENDED: audioInstance.ended,
+      },
+      PLAYER_EVENTS.LOADED_META_DATA
+    );
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.VOLUME_CHANGE, (e: any) => {

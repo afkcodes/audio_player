@@ -10,6 +10,8 @@ const AUDIO_STATE = {
   },
   PROGRESS: 0,
   VOLUME: 50,
+  DURATION: 0,
+  LOAD_START: false,
 };
 
 export default AUDIO_STATE;
