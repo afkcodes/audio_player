@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { checkValidFunction, checkValidObject } from '../../helpers/validators';
-import ChangeNotifier, { notifierState } from '../common/notifier';
+import ChangeNotifier from '../common/notifier';
 
-const notifier = ChangeNotifier;
+const notifier = new ChangeNotifier();
+const notifierState = notifier.getNotifierState();
 
 const useNotifier = (
   eventName: string,
   initialValue?: any,
+  shouldUpdateState: boolean = true,
   resetState: boolean = false,
   callback?: Function
 ) => {
@@ -53,7 +55,7 @@ const useNotifier = (
   return {
     state,
     notify: (eventName: string, data: any) => {
-      ChangeNotifier.notify(eventName, data);
+      notifier.notify(eventName, data);
     },
     removeListener,
   };

@@ -1,11 +1,7 @@
-import {
-  checkValidArray,
-  checkValidFunction,
-  checkValidObject,
-} from '../../helpers/validators';
+import { checkValidFunction, checkValidObject } from '../../helpers/validators';
 
-const listeners: any = {};
-export const notifierState: any = {};
+// const listeners: any = {};
+// export const notifierState: any = {};
 
 class ChangeNotifier {
   /**
@@ -17,16 +13,28 @@ class ChangeNotifier {
    * @returns void
    */
 
-  static notify(
-    eventName: string,
-    data: any,
-    caller: string = 'notifier_default'
-  ) {
-    const listenerCbs = listeners[eventName];
+  #listeners: any = {};
+  #notifierState: any = {};
 
-    if (!listenerCbs) return;
+  private static _instance: ChangeNotifier;
 
-    if (checkValidFunction(listenerCbs as Function) && data !== null) {
+  constructor() {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (ChangeNotifier._instance) {
+      console.warn(
+        'Instantiation failed: cannot create multiple instance of Notifier returning existing instance'
+      );
+      return ChangeNotifier._instance;
+    }
+    ChangeNotifier._instance = this;
+  }
+
+  notify(eventName: string, data: any, caller: string = 'notifier_default') {
+    const listenerCallback = this.#listeners[eventName];
+
+    if (!listenerCallback) return;
+
+    if (checkValidFunction(listenerCallback as Function) && data !== null) {
       console.log(`NOTIFYING TO EVENT : ${eventName} - CALLER : ${caller}`);
 
       /**
@@ -36,17 +44,14 @@ class ChangeNotifier {
        */
 
       if (checkValidObject(data)) {
-        notifierState[eventName] = { ...notifierState[eventName], ...data };
+        this.#notifierState[eventName] = {
+          ...this.#notifierState[eventName],
+          ...data,
+        };
       } else {
-        notifierState[eventName] = data;
+        this.#notifierState[eventName] = data;
       }
-      listenerCbs(notifierState[eventName]);
-    }
-
-    if (checkValidArray(listenerCbs as Function[]) && data !== null) {
-      listenerCbs.forEach((cb: Function) => {
-        cb(data);
-      });
+      listenerCallback(this.#notifierState[eventName]);
     }
   }
 
@@ -59,11 +64,11 @@ class ChangeNotifier {
    * @param state - default state for each event to which it listens to
    * @returns - a method that unsubscribe the events and basically deletes it
    */
-  static listen(eventName: string, callback: Function, state = {}) {
-    if (!listeners[eventName] && checkValidFunction(callback)) {
-      listeners[eventName] = callback;
-      if (!notifierState[eventName]) {
-        notifierState[eventName] = state;
+  listen(eventName: string, callback: Function, state = {}) {
+    if (!this.#listeners[eventName] && checkValidFunction(callback)) {
+      this.#listeners[eventName] = callback;
+      if (!this.#notifierState[eventName]) {
+        this.#notifierState[eventName] = state;
       }
       console.log(`LISTENER ADDED FOR EVENT : ${eventName}`);
     } else {
@@ -79,16 +84,16 @@ class ChangeNotifier {
      */
 
     return (caller: string, resetState: boolean) => {
-      if (listeners[eventName]) {
+      if (this.#listeners[eventName]) {
         console.log(
           `REMOVING EVENT LISTENER FOR EVENT : ${eventName} - CALLER : ${caller}`
         );
-        delete listeners[eventName];
-        if (resetState && notifierState[eventName]) {
+        delete this.#listeners[eventName];
+        if (resetState && this.#notifierState[eventName]) {
           console.log(
             `RESETTING STATE FOR EVENT : ${eventName} - CALLER : ${caller}`
           );
-          delete notifierState[eventName];
+          delete this.#notifierState[eventName];
         }
       } else {
         console.log(`EVENT NOT FOUND : ${eventName}`);
@@ -96,14 +101,8 @@ class ChangeNotifier {
     };
   }
 
-  static multiListen(
-    eventName: string,
-    callbackArr: Function[],
-    append: boolean = false
-  ) {
-    if (listeners[eventName] && checkValidArray(callbackArr)) {
-      listeners[eventName] = callbackArr;
-    }
+  getNotifierState() {
+    return this.#notifierState;
   }
 }
 
