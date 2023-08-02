@@ -1,16 +1,28 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import Home from './components/Home';
-import Test from './components/Test';
+// import Test from './components/Test';
+import { useState } from 'react';
+import './index.css';
+import ChangeNotifier from './utils/common/notifier';
+import useListener from './utils/hooks/useListener.hooks';
 
+export const notifier = new ChangeNotifier();
 function App() {
-  console.log('RENDERING APP');
+  const [state, setState] = useState(0);
+  const { notifier } = useListener('ADD', (data: any) => {
+    setState(data);
+  });
+
   return (
-    <div className='App'>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='test' element={<Test />} />
-      </Routes>
+    <div className='h-screen w-full flex'>
+      <div className='flex flex-col justify-center items-center h-screen bg-red-500 text-white'>
+        {state}
+        <button
+          className='px-4 py-3 bg-red-500'
+          onClick={() => {
+            notifier.notify('ADD', state + 1);
+          }}>
+          ADD
+        </button>
+      </div>
     </div>
   );
 }
