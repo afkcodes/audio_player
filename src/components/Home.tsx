@@ -1,22 +1,24 @@
-import Progress from './Progress';
+import Progress from "./Progress";
 
 const getTracks = async () => {
   const res = await fetch(
-    'https://api.napster.com/v2.1/tracks/top?apikey=ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm'
+    "http://140.238.249.231/v1/station/search?search_query=bollywood&limit=0&filter=radio&user_id=12312aasdasd"
   );
   const data = await res.json();
-  return data;
+  const station = data.data.stations[0];
+
+  return station;
 };
 const getTrack = () => {
-  let track = getTracks().then(({ tracks }) => {
-    return tracks[Math.floor(Math.random() * (9 - 0 + 1) + 0)];
+  let track = getTracks().then((track) => {
+    return track;
   });
   return track;
 };
 
 const Home = () => {
   return (
-    <div className='flex flex-col  items-center justify-center min-h-screen bg-black text-gray-300'>
+    <div className="flex flex-col  items-center justify-center min-h-screen bg-black text-gray-300">
       <Progress getTrack={getTrack} />
       <button
         onClick={() => {
@@ -24,7 +26,8 @@ const Home = () => {
           getTrack();
           // console.log(audio.currentMediaTrack)
         }}
-        className='bg-slate-700 px-4 py-2 text-white rounded-md'>
+        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+      >
         PLAY NEXT
       </button>
     </div>
