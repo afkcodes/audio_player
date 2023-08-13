@@ -114,7 +114,8 @@ const getAudioTrack = async (getTrack: any) => {
     },
   ];
 
-  const random = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+  const random = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+  console.log(random);
 
   return mediaTrack[random];
 };
@@ -149,8 +150,8 @@ const Progress = ({ tracks, getTrack }: any) => {
   });
 
   const playAudio = () => {
-    // audio.stop();
     getAudioTrack(getTrack).then((track) => {
+      console.log("called Playaudoio", track);
       audio.addMediaAndPlay(track);
     });
   };
