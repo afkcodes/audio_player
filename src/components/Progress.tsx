@@ -2,6 +2,7 @@ import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
 import { useEffect, useState } from "react";
 import { secondsToTime } from "../helpers/common";
 import { MediaTrackType } from "../modules/audio/types";
+import Tile from "./Tile";
 
 const media: MediaTrackType = {
   title: "Rubaaiyaan",
@@ -54,16 +55,73 @@ const getAudioTrack = async (getTrack: any) => {
   const track = await getTrack();
   const stream = JSON.parse(track.streams)[0];
 
-  const tracks = [
-    "https://aac.saavncdn.com/006/587d8c98eb1ce0279a7ecd564432b2c4_160.mp4",
-    "https://aac.saavncdn.com/779/83e6c1c7a37e7fd2997f3dfdb9e81a76_160.mp4",
-    "https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_160.mp4",
-    "https://aac.saavncdn.com/134/cf7b0e6af6c65a579edffa05b120ed62_160.mp4",
+  // const tracks = [
+  //   "https://aac.saavncdn.com/006/587d8c98eb1ce0279a7ecd564432b2c4_160.mp4",
+  //   "https://aac.saavncdn.com/779/83e6c1c7a37e7fd2997f3dfdb9e81a76_160.mp4",
+  //   "https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_160.mp4",
+  //   "https://aac.saavncdn.com/134/cf7b0e6af6c65a579edffa05b120ed62_160.mp4",
+  // ];
+
+  const mediaTrack: MediaTrackType[] = [
+    {
+      artwork: [
+        {
+          src: "https://c.saavncdn.com/649/Dil-Ka-Telephone-2-0-From-Dream-Girl-2-Hindi-2023-20230810125949-500x500.jpg",
+          name: "",
+          sizes: "",
+        },
+      ],
+      source:
+        "https://aac.saavncdn.com/649/e92918f198eea63a17af514508cab595_160.mp4",
+      title: "Dil Ka Telephone 2.0",
+      album: "Dream Girl 2",
+      artist: "Meet Bros, Jonita Gandhi, Jubin Nautiyal",
+      comment: "",
+      duration: 309,
+      genre: "",
+      year: 2023,
+    },
+    {
+      artwork: [
+        {
+          src: "https://c.saavncdn.com/471/Unforgettable-English-2009-500x500.jpg",
+          name: "Amplifier",
+          sizes: "500x500",
+        },
+      ],
+      source:
+        "https://aac.saavncdn.com/471/2946c70139054ef6c70d1e155f48819a_160.mp4",
+      title: "Amplifier",
+      album: " Unforgettable ",
+      artist: "Imran Khan",
+      comment: "",
+      duration: 211.8,
+      genre: "",
+      year: 2009,
+    },
+    {
+      artwork: [
+        {
+          src: "https://c.saavncdn.com/890/Excuses-English-2021-20210930112054-500x500.jpg",
+          name: "Excuses",
+          sizes: "500x500",
+        },
+      ],
+      source:
+        "https://aac.saavncdn.com/890/a18aabc4681dc6c334d5d29b67e84a0f_160.mp4",
+      title: "Excuses",
+      album: " Excuses",
+      artist: "AP Dhillon, Gurinder Gill, Intense",
+      comment: "",
+      duration: 154.2,
+      genre: "",
+      year: 2009,
+    },
   ];
 
   const random = Math.floor(Math.random() * (3 - 0 + 1) + 0);
 
-  return tracks[random];
+  return mediaTrack[random];
 };
 
 // const fetchAnPlay = async (getTrack: any) => {
@@ -94,17 +152,11 @@ const Progress = ({ tracks, getTrack }: any) => {
   });
 
   const playAudio = () => {
-    audio.reset().then(() => {
-      getAudioTrack(getTrack).then((track) => {
-        audio.playNextTrack({
-          title: "Test",
-          source: track,
-        });
-      });
+    // audio.stop();
+    getAudioTrack(getTrack).then((track) => {
+      audio.addMediaAndPlay(track);
     });
   };
-
-  // console.log(state);
 
   useEffect(() => {
     if (state.playbackState === "ended") {
@@ -112,32 +164,52 @@ const Progress = ({ tracks, getTrack }: any) => {
     }
   }, [state.playbackState]);
 
+  // console.log(state);
+
   return (
     <div className="flex flex-col justify-center items-center gap-4">
-      <button
+      <Tile
+        artwork={state?.currentTrack?.artwork?.[0]?.src}
+        title={state.currentTrack.title}
+        artist={state.currentTrack.artist}
+        album={state.currentTrack.album}
+      />
+
+      <input
+        type="button"
+        value="ADD NEW AND PLAY"
         onClick={playAudio}
         className="bg-slate-700 px-4 py-2 text-white rounded-md"
-      >
-        PLAY
-      </button>
+      />
 
-      <button
+      <input
+        type="button"
+        value="PLAY"
+        onClick={() => {
+          audio.play();
+        }}
+        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+      />
+
+      <input
+        type="button"
+        value="PAUSE"
         onClick={() => {
           audio.pause();
         }}
         className="bg-slate-700 px-4 py-2 text-white rounded-md"
-      >
-        PAUSE
-      </button>
-      <button
+      />
+
+      <input
+        type="button"
+        value="SEEK"
         onClick={() => {
           // audio.pause();
           audio.seek(state.progress + 30);
         }}
         className="bg-slate-700 px-4 py-2 text-white rounded-md"
-      >
-        SEEK
-      </button>
+      />
+
       <div className="flex flex-col justify-center items-center gap-4">
         <p>Duration : {secondsToTime(state.duration)}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
