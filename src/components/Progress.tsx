@@ -33,27 +33,22 @@ const media2: MediaTrackType = {
   ],
 };
 
-const audio = new AudioX({
-  mode: "REACT",
-  autoplay: false,
-  useDefaultEventListeners: true,
-});
+const audio = new AudioX();
 
-// const initializeAudio = (source: string) => {
-//   audio.init({
-//     mediaTrack: {
-//       title: 'Test',
-//       source: source,
-//     },
-//     mode: 'REACT',
-//     autoplay: false,
-//     useDefaultEventListeners: true,
-//   });
-// };
+const initializeAudio = () => {
+  audio.init({
+    autoplay: false,
+    useDefaultEventListeners: true,
+    mode: "REACT",
+    showNotificationActions: true,
+    preloadStrategy: "auto",
+    playbackRate: 1,
+  });
+};
 
 const getAudioTrack = async (getTrack: any) => {
   const track = await getTrack();
-  const stream = JSON.parse(track.streams)[0];
+  // const stream = JSON.parse(track.streams)[0];
 
   // const tracks = [
   //   "https://aac.saavncdn.com/006/587d8c98eb1ce0279a7ecd564432b2c4_160.mp4",
@@ -145,6 +140,8 @@ const getAudioTrack = async (getTrack: any) => {
 //   });
 // };
 
+initializeAudio();
+
 const Progress = ({ tracks, getTrack }: any) => {
   const [state, setState] = useState<AudioState>(AUDIO_STATE);
   audio.subscribe("AUDIO_X_STATE", (data: AudioState) => {
@@ -179,7 +176,7 @@ const Progress = ({ tracks, getTrack }: any) => {
         type="button"
         value="ADD NEW AND PLAY"
         onClick={playAudio}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
       <input
@@ -188,7 +185,7 @@ const Progress = ({ tracks, getTrack }: any) => {
         onClick={() => {
           audio.play();
         }}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
       <input
@@ -197,7 +194,7 @@ const Progress = ({ tracks, getTrack }: any) => {
         onClick={() => {
           audio.pause();
         }}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
       <input
@@ -205,9 +202,9 @@ const Progress = ({ tracks, getTrack }: any) => {
         value="SEEK"
         onClick={() => {
           // audio.pause();
-          audio.seek(state.progress + 30);
+          audio.seek((state.progress as number) + 30);
         }}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md"
+        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
       <div className="flex flex-col justify-center items-center gap-4">

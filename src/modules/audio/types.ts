@@ -1,4 +1,8 @@
-type MediaArtworkType = { src: string, name?: string, sizes?: string }
+export interface MediaArtworkType {
+  src: string;
+  name?: string;
+  sizes?: string;
+}
 export interface MediaTrackType {
   title: string;
   source: string;
@@ -8,5 +12,5 @@ export interface MediaTrackType {
   album?: string;
   comment?: string;
   year?: number;
-  artist?: string
+  artist?: string;
 }
