@@ -228,7 +228,7 @@ const Progress = ({ tracks, getTrack }: any) => {
 
       <div className="flex flex-col justify-center items-center gap-4">
         <p>State : {state.playbackState}</p>
-        <p>Duration : {secondsToTime(state.duration)}</>
+        <p>Duration : {secondsToTime(state.duration)}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
         <p>currentTrackPlayTime :{state.currentTrackPlayTime}</p>
         <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p>
