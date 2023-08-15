@@ -1,7 +1,7 @@
-import ChangeNotifier, { notifierState } from '../../utils/common/notifier';
-import Player from './audio';
-import { audioErrorHandler } from './errorHandler';
-import { PLAYER_EVENTS } from './events';
+import ChangeNotifier, { notifierState } from "../../utils/common/notifier";
+import Player from "./audio";
+import { audioErrorHandler } from "./errorHandler";
+import { PLAYER_EVENTS } from "./events";
 
 const attachAudioEventListeners = () => {
   const audioInstance = Player.getAudioInstance();
@@ -9,7 +9,7 @@ const attachAudioEventListeners = () => {
 
   audioInstance.addEventListener(PLAYER_EVENTS.TIME_UPDATE, (e: any) => {
     notifier.notify(
-      'AUDIO_EVENTS',
+      "AUDIO_EVENTS",
       {
         IS_PLAYING: true,
         CURRENT_TIME: audioInstance.currentTime,
@@ -21,7 +21,7 @@ const attachAudioEventListeners = () => {
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.PROGRESS, (e: any) => {
-    notifier.notify('AUDIO_EVENTS', {
+    notifier.notify("AUDIO_EVENTS", {
       CURRENT_TIME: audioInstance.currentTime,
       IS_PLAYING: true,
       IS_PAUSED: false,
@@ -32,7 +32,7 @@ const attachAudioEventListeners = () => {
 
   audioInstance.addEventListener(PLAYER_EVENTS.PLAYING, (e: any) => {
     notifier.notify(
-      'AUDIO_EVENTS',
+      "AUDIO_EVENTS",
       {
         CURRENT_TIME: audioInstance.currentTime,
         IS_PLAYING: !audioInstance.paused,
@@ -45,7 +45,7 @@ const attachAudioEventListeners = () => {
 
   audioInstance.addEventListener(PLAYER_EVENTS.PAUSE, (e: any) => {
     notifier.notify(
-      'AUDIO_EVENTS',
+      "AUDIO_EVENTS",
       {
         CURRENT_TIME: audioInstance.currentTime,
         IS_PLAYING: !audioInstance.paused,
@@ -57,7 +57,7 @@ const attachAudioEventListeners = () => {
   });
 
   audioInstance.addEventListener(PLAYER_EVENTS.ENDED, (e: any) => {
-    notifier.notify('AUDIO_EVENTS', {
+    notifier.notify("AUDIO_EVENTS", {
       CURRENT_TIME: audioInstance.currentTime,
       IS_PLAYING: !audioInstance.paused,
       IS_PAUSED: audioInstance.paused,
@@ -69,7 +69,7 @@ const attachAudioEventListeners = () => {
     const error = audioErrorHandler(e);
 
     notifier.notify(
-      'AUDIO_EVENTS',
+      "AUDIO_EVENTS",
       {
         CURRENT_TIME: audioInstance.currentTime,
         IS_PLAYING: !audioInstance.paused,
@@ -91,9 +91,9 @@ const attachAudioEventListeners = () => {
 
   audioInstance.addEventListener(PLAYER_EVENTS.VOLUME_CHANGE, (e: any) => {
     notifier.notify(
-      'VOLUME_CHANGE',
-      (notifierState['AUDIO_EVENTS'] = {
-        ...notifierState['AUDIO_EVENTS'],
+      "VOLUME_CHANGE",
+      (notifierState["AUDIO_EVENTS"] = {
+        ...notifierState["AUDIO_EVENTS"],
         VOLUME: Math.round(audioInstance.volume * 100),
       }),
       PLAYER_EVENTS.VOLUME_CHANGE

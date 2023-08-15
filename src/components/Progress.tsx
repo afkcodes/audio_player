@@ -1,7 +1,8 @@
-import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
 import { useEffect, useState } from "react";
 import { secondsToTime } from "../helpers/common";
+
 import { MediaTrackType } from "../modules/audio/types";
+import { AUDIO_STATE, AudioState, AudioX } from "../utils/dist";
 import Tile from "./Tile";
 
 const media: MediaTrackType = {
@@ -43,6 +44,7 @@ const initializeAudio = () => {
     showNotificationActions: true,
     preloadStrategy: "auto",
     playbackRate: 1,
+    enablePlayLog: true,
   });
 };
 
@@ -115,7 +117,6 @@ const getAudioTrack = async (getTrack: any) => {
   ];
 
   const random = Math.floor(Math.random() * (2 - 0 + 1) + 0);
-  console.log(random);
 
   return mediaTrack[random];
 };
@@ -142,6 +143,7 @@ const getAudioTrack = async (getTrack: any) => {
 // };
 
 initializeAudio();
+const instance = AudioX.getAudioInstance();
 
 const Progress = ({ tracks, getTrack }: any) => {
   const [state, setState] = useState<AudioState>(AUDIO_STATE);
@@ -151,7 +153,6 @@ const Progress = ({ tracks, getTrack }: any) => {
 
   const playAudio = () => {
     getAudioTrack(getTrack).then((track) => {
-      console.log("called Playaudoio", track);
       audio.addMediaAndPlay(track);
     });
   };
@@ -162,7 +163,7 @@ const Progress = ({ tracks, getTrack }: any) => {
     }
   }, [state.playbackState]);
 
-  // console.log(state);
+  console.log("playbackState", state.playbackState);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
@@ -202,8 +203,7 @@ const Progress = ({ tracks, getTrack }: any) => {
         type="button"
         value="SEEK"
         onClick={() => {
-          // audio.pause();
-          audio.seek((state.progress as number) + 30);
+          audio.seek((state.progress as number) + 10);
         }}
         className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
@@ -211,6 +211,8 @@ const Progress = ({ tracks, getTrack }: any) => {
       <div className="flex flex-col justify-center items-center gap-4">
         <p>Duration : {secondsToTime(state.duration)}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
+        <p>currentTrackPlayTime :{state.currentTrackPlayTime}</p>
+        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p>
       </div>
     </div>
   );
