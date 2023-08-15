@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+kiimport { useEffect, useState } from "react";
 import { secondsToTime } from "../helpers/common";
 
 import { MediaTrackType } from "../modules/audio/types";
@@ -227,7 +227,7 @@ const Progress = ({ tracks, getTrack }: any) => {
       />
 
       <div className="flex flex-col justify-center items-center gap-4">
-        <p>Duration : {secondsToTime(state.playbackState)}</p>
+        <p>State : {state.playbackState}</p>
         <p>Duration : {secondsToTime(state.duration)}</>
         <p>Progress : {secondsToTime(state.progress)}</p>
         <p>currentTrackPlayTime :{state.currentTrackPlayTime}</p>
