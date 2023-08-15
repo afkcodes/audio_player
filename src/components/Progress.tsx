@@ -114,9 +114,27 @@ const getAudioTrack = async (getTrack: any) => {
       genre: "",
       year: 2009,
     },
+    {
+      artwork: [
+        {
+          src: "https://c.saavncdn.com/026/Chaleya-From-Jawan-Hindi-2023-20230814014337-500x500.jpg",
+          name: "Chaleya",
+          sizes: "500x500",
+        },
+      ],
+      source:
+        "https://aac.saavncdn.com/026/3687b7ddfa714fcd3d7e1a4af95ead4e_160.mp4",
+      title: "Chaleya",
+      album: " Jawan",
+      artist: "Anirudh Ravichander, Arijit Singh, Shilpa Rao",
+      comment: "",
+      duration: 154.2,
+      genre: "",
+      year: 2023,
+    },
   ];
 
-  const random = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+  const random = Math.floor(Math.random() * (3 - 0 + 1) + 0);
 
   return mediaTrack[random];
 };
