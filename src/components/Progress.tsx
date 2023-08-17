@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { secondsToTime } from "../helpers/common";
 
 import { MediaTrackType } from "../modules/audio/types";
+
 import { AUDIO_STATE, AudioState, AudioX } from "../utils/dist";
 import Tile from "./Tile";
 
@@ -166,7 +167,7 @@ const instance = AudioX.getAudioInstance();
 const Progress = ({ tracks, getTrack }: any) => {
   const [state, setState] = useState<AudioState>(AUDIO_STATE);
   audio.subscribe("AUDIO_X_STATE", (data: AudioState) => {
-    setState({ ...AUDIO_STATE, ...data });
+    setState({ ...data });
   });
 
   const playAudio = () => {

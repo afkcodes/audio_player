@@ -21,6 +21,7 @@ interface AudioEvents {
     PROGRESS: 'progress';
     LOAD_START: 'loadstart';
     ERROR: 'error';
+    TRACK_CHANGE: 'trackchange';
 }
 interface CustomAudioState {
     AUDIO_X_STATE: 'AUDIO_X_STATE';
@@ -102,6 +103,7 @@ interface NetworkState {
 
 declare class AudioX {
     private _audio;
+    private isPlayLogEnabled;
     private static _instance;
     constructor();
     init(initProps: AudioInit): Promise<void>;
@@ -118,7 +120,6 @@ declare class AudioX {
     destroy(): Promise<void>;
     subscribe(eventName: string, callback: (data: any) => void, state?: any): () => void;
     attachEventListeners(eventListenersList: EventListenersList): void;
-    enablePlayLog(): void;
     get id(): string | null;
     set media(media: MediaTrack);
     static getAudioInstance(): HTMLAudioElement;
