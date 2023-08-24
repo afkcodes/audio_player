@@ -12,7 +12,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "react-router-dom": "^6.6.1"
+    "react-router-dom": "^6.6.1",
+    "audio_x": "afkcodes/audio_x#test"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

@@ -3,8 +3,9 @@ import { secondsToTime } from "../helpers/common";
 
 import { MediaTrackType } from "../modules/audio/types";
 
-import { AUDIO_STATE, AudioState, AudioX } from "../utils/dist";
 import Tile from "./Tile";
+
+import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
 
 const media: MediaTrackType = {
   title: "Rubaaiyaan",
