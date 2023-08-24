@@ -46,6 +46,7 @@ const initializeAudio = () => {
     preloadStrategy: "auto",
     playbackRate: 1,
     enablePlayLog: true,
+    enableHls: true,
   });
 };
 
@@ -64,57 +65,59 @@ const getAudioTrack = async (getTrack: any) => {
     {
       artwork: [
         {
-          src: "https://c.saavncdn.com/649/Dil-Ka-Telephone-2-0-From-Dream-Girl-2-Hindi-2023-20230810125949-500x500.jpg",
+          src: "https://mirchiapi.s3.amazonaws.com/radio-stations/mumbai.png",
           name: "",
           sizes: "",
         },
       ],
       source:
-        "https://aac.saavncdn.com/649/e92918f198eea63a17af514508cab595_160.mp4",
-      title: "Dil Ka Telephone 2.0",
-      album: "Dream Girl 2",
-      artist: "Meet Bros, Jonita Gandhi, Jubin Nautiyal",
+        "https://playerservices.streamtheworld.com/api/livestream-redirect/BOM_HIN_ESTAAC.m3u8",
+      title: "Mirchi Mumbai",
+      album: "Mumbai",
+      artist: "Mumbai",
       comment: "",
       duration: 309,
       genre: "",
       year: 2023,
     },
+
     {
       artwork: [
         {
-          src: "https://c.saavncdn.com/471/Unforgettable-English-2009-500x500.jpg",
-          name: "Amplifier",
-          sizes: "500x500",
+          src: "https://static.mytuner.mobi/media/tvos_radios/bjmtc6tcrepm.png",
+          name: "",
+          sizes: "",
         },
       ],
-      source:
-        "https://aac.saavncdn.com/471/2946c70139054ef6c70d1e155f48819a_160.mp4",
-      title: "Amplifier",
-      album: " Unforgettable ",
-      artist: "Imran Khan",
+      source: "https://carol.epichosts.co.uk:8570/;",
+      title: "Diverse FM",
+      album: "Mumbai",
+      artist: "Mumbai",
       comment: "",
-      duration: 211.8,
+      duration: 309,
       genre: "",
-      year: 2009,
+      year: 2023,
     },
+
     {
       artwork: [
         {
-          src: "https://c.saavncdn.com/890/Excuses-English-2021-20210930112054-500x500.jpg",
-          name: "Excuses",
-          sizes: "500x500",
+          src: "https://mirchiapi.s3.amazonaws.com/radio-stations/mumbai.png",
+          name: "",
+          sizes: "",
         },
       ],
       source:
-        "https://aac.saavncdn.com/890/a18aabc4681dc6c334d5d29b67e84a0f_160.mp4",
-      title: "Excuses",
-      album: " Excuses",
-      artist: "AP Dhillon, Gurinder Gill, Intense",
+        "https://playerservices.streamtheworld.com/api/livestream-redirect/BOM_HIN_ESTAAC.m3u8",
+      title: "Mirchi Mumbai",
+      album: "Mumbai",
+      artist: "Mumbai",
       comment: "",
-      duration: 154.2,
+      duration: 309,
       genre: "",
-      year: 2009,
+      year: 2023,
     },
+
     {
       artwork: [
         {
@@ -124,7 +127,7 @@ const getAudioTrack = async (getTrack: any) => {
         },
       ],
       source:
-        "https://aac.saavncdn.com/026/3687b7ddfa714fcd3d7e1a4af95ead4e_160.mp4",
+        "https://playerservices.streamtheworld.com/api/livestream-redirect/BOM_HIN_ESTAAC.m3u8",
       title: "Chaleya",
       album: " Jawan",
       artist: "Anirudh Ravichander, Arijit Singh, Shilpa Rao",
@@ -135,32 +138,10 @@ const getAudioTrack = async (getTrack: any) => {
     },
   ];
 
-  const random = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+  const random = Math.floor(Math.random() * (2 - 0 + 1) + 0);
 
   return mediaTrack[random];
 };
-
-// const fetchAnPlay = async (getTrack: any) => {
-//   getAudioTrack(getTrack).then((track) => {
-//     if (track) {
-//       audio
-//         .addMedia({
-//           title: "Test",
-//           source: track,
-//         })
-//         .then(() => {
-//           audio.subscribe("AUDIO_X_STATE", (state: AudioState) => {
-//             if (state.playbackState === "ready") {
-//               audio.play().then(() => {
-//                 console.log("audio started playing");
-//               });
-//             }
-//           });
-//         });
-//     }
-//   });
-// };
-
 initializeAudio();
 const instance = AudioX.getAudioInstance();
 

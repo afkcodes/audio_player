@@ -1,3 +1,5 @@
+import Hls from 'hls.js';
+
 interface AudioEvents {
     ABORT: 'abort';
     TIME_UPDATE: 'timeupdate';
@@ -60,6 +62,7 @@ interface AudioInit {
     customEventListeners?: EventListenerCallbackMap | null;
     autoplay?: boolean;
     enablePlayLog?: boolean;
+    enableHls?: boolean;
 }
 interface AudioError {
     code: number | string | null;
@@ -107,6 +110,7 @@ declare class AudioX {
     private static _instance;
     constructor();
     init(initProps: AudioInit): Promise<void>;
+    addHlsMedia(mediaTrack: MediaTrack): void;
     addMedia(mediaTrack: MediaTrack): Promise<void>;
     play(): Promise<void>;
     addMediaAndPlay(mediaTrack: MediaTrack): Promise<void>;
@@ -121,8 +125,8 @@ declare class AudioX {
     subscribe(eventName: string, callback: (data: any) => void, state?: any): () => void;
     attachEventListeners(eventListenersList: EventListenersList): void;
     get id(): string | null;
-    set media(media: MediaTrack);
     static getAudioInstance(): HTMLAudioElement;
+    static getHlsInstance(): Hls;
 }
 
 declare const AUDIO_X_CONSTANTS: Readonly<{
