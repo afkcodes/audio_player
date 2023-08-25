@@ -118,28 +118,9 @@ const getAudioTrack = async (getTrack: any) => {
       genre: "",
       year: 2023,
     },
-
-    {
-      artwork: [
-        {
-          src: "https://c.saavncdn.com/026/Chaleya-From-Jawan-Hindi-2023-20230814014337-500x500.jpg",
-          name: "Chaleya",
-          sizes: "500x500",
-        },
-      ],
-      source:
-        "https://playerservices.streamtheworld.com/api/livestream-redirect/BOM_HIN_ESTAAC.m3u8",
-      title: "Chaleya",
-      album: " Jawan",
-      artist: "Anirudh Ravichander, Arijit Singh, Shilpa Rao",
-      comment: "",
-      duration: 154.2,
-      genre: "",
-      year: 2023,
-    },
   ];
 
-  const random = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+  const random = Math.floor(Math.random() * (1 - 0 + 1) + 0);
 
   return mediaTrack[random];
 };
@@ -164,7 +145,7 @@ const Progress = ({ tracks, getTrack }: any) => {
     }
   }, [state.playbackState]);
 
-  console.log("playbackState", state.playbackState);
+  console.log("playbackState", state);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
