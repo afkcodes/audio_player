@@ -145,7 +145,7 @@ const Progress = ({ tracks, getTrack }: any) => {
     }
   }, [state.playbackState]);
 
-  console.log("playbackState", state);
+  console.log("playbackState", state.playbackState);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
