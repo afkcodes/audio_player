@@ -168,37 +168,19 @@ const Progress = ({ tracks, getTrack }: any) => {
 
       <input
         type="button"
-        value="PLAY"
+        value={`${instance.paused ? "PLAY" : "PAUSE"}`}
         onClick={() => {
-          audio.play();
+          instance.paused ? audio.play() : audio.pause();
         }}
         className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
-      <input
-        type="button"
-        value="PAUSE"
-        onClick={() => {
-          audio.pause();
-        }}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
-      />
-
-      {/* <input
-        type="button"
-        value="SEEK"
-        onClick={() => {
-          audio.seek((state.progress as number) + 10);
-        }}
-        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
-      /> */}
       <div className="w-full">
         <Equalizer instance={instance} />
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <p>State : {state.playbackState}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
-        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p>
       </div>
     </div>
   );
