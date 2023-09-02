@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { secondsToTime } from "../helpers/common";
 
 import { MediaTrackType } from "../modules/audio/types";
 
 import Tile from "./Tile";
 
 import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
+import Equalizer from "./Equalizer";
 
 const media: MediaTrackType = {
   title: "Rubaaiyaan",
@@ -40,7 +40,7 @@ const audio = new AudioX();
 
 const initializeAudio = () => {
   audio.init({
-    autoplay: false,
+    autoPlay: false,
     useDefaultEventListeners: true,
     mode: "REACT",
     showNotificationActions: true,
@@ -127,6 +127,8 @@ const getAudioTrack = async (getTrack: any) => {
 initializeAudio();
 const instance = AudioX.getAudioInstance();
 
+console.log(instance);
+
 const Progress = ({ tracks, getTrack }: any) => {
   const [state, setState] = useState<AudioState>(AUDIO_STATE);
   audio.subscribe("AUDIO_X_STATE", (data: AudioState) => {
@@ -192,11 +194,12 @@ const Progress = ({ tracks, getTrack }: any) => {
 
       <div className="flex flex-col justify-center items-center gap-4">
         <p>State : {state.playbackState}</p>
-        <p>Duration : {secondsToTime(state.duration)}</p>
+        {/* <p>Duration : {secondsToTime(state.duration)}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
         <p>currentTrackPlayTime :{state.currentTrackPlayTime}</p>
-        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p>
+        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p> */}
       </div>
+      <Equalizer instance={instance} />
     </div>
   );
 };
