@@ -16,7 +16,7 @@ const getTrack = () => {
 
 const Home = () => {
   return (
-    <div className="flex flex-col  items-center justify-center min-h-screen bg-black text-gray-300">
+    <div className="flex flex-col items-center justify-center bg-black text-gray-300">
       <Progress getTrack={getTrack} />
     </div>
   );

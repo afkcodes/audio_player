@@ -1,5 +1,38 @@
+declare global {
+  var webkitAudioContext: AudioContext;
+}
+
 import { useCallback, useEffect, useState } from "react";
-const audioContext = new AudioContext();
+let audioContext: AudioContext;
+const initWebAudio = () => {
+  let ctx: AudioContext,
+    usingWebAudio = true;
+
+  try {
+    if (typeof AudioContext !== "undefined") {
+      ctx = new window.AudioContext();
+      audioContext = ctx;
+    } else {
+      usingWebAudio = false;
+    }
+  } catch (e) {
+    usingWebAudio = false;
+  }
+
+  // context state at this time is `undefined` in iOS8 Safari
+  if (usingWebAudio && audioContext.state === "suspended") {
+    var resume = function () {
+      ctx.resume();
+      setTimeout(function () {
+        if (ctx.state === "running") {
+          document.body.removeEventListener("touchend", resume, false);
+        }
+      }, 0);
+    };
+
+    document.body.addEventListener("touchend", resume, false);
+  }
+};
 
 function convertVolumeToLinear(volume: number) {
   volume = Math.max(0.0, Math.min(1.0, volume));
@@ -44,13 +77,15 @@ const createEqualizer = (
 const Equalizer = ({ instance }: any) => {
   const [vol, setVol] = useState(50);
   const [equalizerBands, setEqualizerBands] = useState<any>([]);
+  const [isSetupDone, setIsSetupDone] = useState(false);
 
   useEffect(() => {
-    console.log(instance);
-    if (audioContext && instance && !done) {
+    if (!isSetupDone && !done) {
+      initWebAudio();
       const bands = createEqualizer(audioContext, instance);
       console.log(bands);
       setEqualizerBands(bands);
+      setIsSetupDone(true);
     }
   }, [instance]);
 
@@ -70,7 +105,8 @@ const Equalizer = ({ instance }: any) => {
   );
 
   return (
-    <div>
+    <div className="flex justify-center flex-col w-full relative">
+      <p>VOLUME</p>
       <input
         type="range"
         max={100}
@@ -79,12 +115,11 @@ const Equalizer = ({ instance }: any) => {
         onChange={(e) => setVol(Number(e.target.value))}
       />
 
-      <div>Equalizer Sliders</div>
-      <div>
+      <div className="flex w-full h-60 gap-12 relative items-center">
         {bands.map((band, index) => (
-          <div key={index}>
-            <p>Band {index + 1}</p>
+          <div key={index} className="relative">
             <input
+              className="-rotate-90 absolute"
               type="range"
               min="-10"
               max="10"

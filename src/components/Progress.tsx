@@ -5,6 +5,7 @@ import { MediaTrackType } from "../modules/audio/types";
 import Tile from "./Tile";
 
 import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
+import { secondsToTime } from "../helpers/common";
 import Equalizer from "./Equalizer";
 
 const media: MediaTrackType = {
@@ -150,7 +151,7 @@ const Progress = ({ tracks, getTrack }: any) => {
   console.log("playbackState", state.playbackState);
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4">
+    <div className="flex flex-col justify-center items-center gap-4 w-full">
       <Tile
         artwork={state?.currentTrack?.artwork?.[0]?.src}
         title={state.currentTrack.title}
@@ -183,23 +184,22 @@ const Progress = ({ tracks, getTrack }: any) => {
         className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
-      <input
+      {/* <input
         type="button"
         value="SEEK"
         onClick={() => {
           audio.seek((state.progress as number) + 10);
         }}
         className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
-      />
-
+      /> */}
+      <div className="w-full">
+        <Equalizer instance={instance} />
+      </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <p>State : {state.playbackState}</p>
-        {/* <p>Duration : {secondsToTime(state.duration)}</p>
         <p>Progress : {secondsToTime(state.progress)}</p>
-        <p>currentTrackPlayTime :{state.currentTrackPlayTime}</p>
-        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p> */}
+        <p>previousTrackPlayTime :{state.previousTrackPlayTime}</p>
       </div>
-      <Equalizer instance={instance} />
     </div>
   );
 };
