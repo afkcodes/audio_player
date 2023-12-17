@@ -4,39 +4,30 @@ declare global {
 
 import { useCallback, useEffect, useState } from "react";
 let audioContext: AudioContext;
-const initWebAudio = () => {
-  let ctx: AudioContext,
-    usingWebAudio = true;
+function initWebAudio() {
+  let ctx: AudioContext;
 
   try {
     if (typeof AudioContext !== "undefined") {
-      ctx = new window.AudioContext();
+      ctx = new AudioContext();
       audioContext = ctx;
-    } else {
-      usingWebAudio = false;
     }
   } catch (e) {
-    usingWebAudio = false;
+    console.error("Error creating AudioContext:", e);
   }
 
-  // context state at this time is `undefined` in iOS8 Safari
-  if (usingWebAudio && audioContext.state === "suspended") {
-    var resume = function () {
-      ctx.resume();
-      setTimeout(function () {
-        if (ctx.state === "running") {
-          document.body.removeEventListener("touchend", resume, false);
-        }
-      }, 0);
-    };
-
-    document.body.addEventListener("touchend", resume, false);
-  }
-};
-
-function convertVolumeToLinear(volume: number) {
-  volume = Math.max(0.0, Math.min(1.0, volume));
-  return Math.pow(volume, 2);
+  document.body.addEventListener("click", () => {
+    if (ctx && ctx.state === "suspended") {
+      ctx
+        .resume()
+        .then(() => {
+          console.log("AudioContext resumed ");
+        })
+        .catch((error) => {
+          console.error("Error AudioContext:", error);
+        });
+    }
+  });
 }
 
 let done = false;
@@ -80,13 +71,15 @@ const Equalizer = ({ instance }: any) => {
   const [isSetupDone, setIsSetupDone] = useState(false);
 
   useEffect(() => {
-    if (!isSetupDone && !done) {
-      initWebAudio();
-      const bands = createEqualizer(audioContext, instance);
-      console.log(bands);
-      setEqualizerBands(bands);
-      setIsSetupDone(true);
-    }
+    document.body.addEventListener("click", () => {
+      if (!isSetupDone && !done) {
+        initWebAudio();
+        const bands = createEqualizer(audioContext, instance);
+        console.log(bands);
+        setEqualizerBands(bands);
+        setIsSetupDone(true);
+      }
+    });
   }, [instance]);
 
   useEffect(() => {

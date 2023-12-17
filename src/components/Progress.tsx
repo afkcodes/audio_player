@@ -4,38 +4,9 @@ import { MediaTrackType } from "../modules/audio/types";
 
 import Tile from "./Tile";
 
-import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
 import { secondsToTime } from "../helpers/common";
+import { AUDIO_STATE, AudioState, AudioX } from "../utils/dist";
 import Equalizer from "./Equalizer";
-
-const media: MediaTrackType = {
-  title: "Rubaaiyaan",
-  album: "Qala (Music From The Netflix Film)",
-  artist: "Amit Trivedi, Swanand Kirkire and Shahid Mallya",
-  source:
-    "https://aac.saavncdn.com/440/74ecdc751adf8a3c51a9a526d3c6429c_160.mp4",
-  artwork: [
-    {
-      src: "https://c.saavncdn.com/440/Qala-Music-From-The-Netflix-Film-Hindi-2022-20221218100455-500x500.jpg",
-      name: "apna bana le bhediya movie",
-      sizes: "500x500",
-    },
-  ],
-};
-
-const media2: MediaTrackType = {
-  source:
-    "https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_160.mp4",
-  title: "Apna Bana Le",
-  artist: "Arijit Singh, Sachin-Jigar",
-  album: "Bhediya",
-  artwork: [
-    {
-      src: "https://c.saavncdn.com/815/Bhediya-Hindi-2022-20221206124543-500x500.jpg",
-      sizes: "96x96",
-    },
-  ],
-};
 
 const audio = new AudioX();
 
@@ -47,21 +18,14 @@ const initializeAudio = () => {
     showNotificationActions: true,
     preloadStrategy: "auto",
     playbackRate: 1,
+    enableEQ: false,
     enablePlayLog: true,
-    enableHls: true,
+    enableHls: false,
   });
 };
 
 const getAudioTrack = async (getTrack: any) => {
   const track = await getTrack();
-  // const stream = JSON.parse(track.streams)[0];
-
-  // const tracks = [
-  //   "https://aac.saavncdn.com/006/587d8c98eb1ce0279a7ecd564432b2c4_160.mp4",
-  //   "https://aac.saavncdn.com/779/83e6c1c7a37e7fd2997f3dfdb9e81a76_160.mp4",
-  //   "https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_160.mp4",
-  //   "https://aac.saavncdn.com/134/cf7b0e6af6c65a579edffa05b120ed62_160.mp4",
-  // ];
 
   const mediaTrack: MediaTrackType[] = [
     {
@@ -100,35 +64,14 @@ const getAudioTrack = async (getTrack: any) => {
       genre: "",
       year: 2023,
     },
-
-    {
-      artwork: [
-        {
-          src: "https://mirchiapi.s3.amazonaws.com/radio-stations/mumbai.png",
-          name: "",
-          sizes: "",
-        },
-      ],
-      source:
-        "https://playerservices.streamtheworld.com/api/livestream-redirect/BOM_HIN_ESTAAC.m3u8",
-      title: "Mirchi Mumbai",
-      album: "Mumbai",
-      artist: "Mumbai",
-      comment: "",
-      duration: 309,
-      genre: "",
-      year: 2023,
-    },
   ];
 
   const random = Math.floor(Math.random() * (1 - 0 + 1) + 0);
 
-  return mediaTrack[random];
+  return mediaTrack[1];
 };
 initializeAudio();
 const instance = AudioX.getAudioInstance();
-
-console.log(instance);
 
 const Progress = ({ tracks, getTrack }: any) => {
   const [state, setState] = useState<AudioState>(AUDIO_STATE);
@@ -147,8 +90,6 @@ const Progress = ({ tracks, getTrack }: any) => {
       playAudio();
     }
   }, [state.playbackState]);
-
-  console.log("playbackState", state.playbackState);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4 w-full">
@@ -176,6 +117,7 @@ const Progress = ({ tracks, getTrack }: any) => {
       />
 
       <div className="w-full">
+        {/* <NewEq instance={instance} bands={rockEQSettings} audio={audio} /> */}
         <Equalizer instance={instance} />
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
