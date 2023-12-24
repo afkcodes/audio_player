@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Equalizer Example</title>
+</head>
+
+<body>
+  <audio id="audioElement" controls>
+    <source src="https://carol.epichosts.co.uk:8570/;" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div>
+    <h2>Equalizer 1</h2>
+    <label for="eq1Gain">Gain:</label>
+    <input id="eq1Gain" type="range" min="-20" max="20" step="0.1" value="0">
+    <label for="eq1Frequency">Frequency:</label>
+    <input id="eq1Frequency" type="range" min="20" max="20000" step="1" value="1000">
+  </div>
+  <div>
+    <h2>Equalizer 2</h2>
+    <label for="eq2Gain">Gain:</label>
+    <input id="eq2Gain" type="range" min="-20" max="20" step="0.1" value="0">
+    <label for="eq2Frequency">Frequency:</label>
+    <input id="eq2Frequency" type="range" min="20" max="20000" step="1" value="5000">
+  </div>
+  <script src="test.js"></script>
+</body>
+
+</html>

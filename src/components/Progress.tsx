@@ -5,8 +5,9 @@ import { MediaTrackType } from "../modules/audio/types";
 import Tile from "./Tile";
 
 import { secondsToTime } from "../helpers/common";
-import { AUDIO_STATE, AudioState, AudioX } from "../utils/dist";
-import Equalizer from "./Equalizer";
+
+import { AUDIO_STATE, AudioState, AudioX } from "audio_x";
+import NewEq from "./NewEq";
 
 const audio = new AudioX();
 
@@ -18,9 +19,12 @@ const initializeAudio = () => {
     showNotificationActions: true,
     preloadStrategy: "auto",
     playbackRate: 1,
-    enableEQ: false,
+    enableEQ: true,
     enablePlayLog: true,
-    enableHls: false,
+    enableHls: true,
+    hlsConfig: {
+      startLevel: -1,
+    },
   });
 };
 
@@ -68,7 +72,7 @@ const getAudioTrack = async (getTrack: any) => {
 
   const random = Math.floor(Math.random() * (1 - 0 + 1) + 0);
 
-  return mediaTrack[1];
+  return mediaTrack[0];
 };
 initializeAudio();
 const instance = AudioX.getAudioInstance();
@@ -92,7 +96,7 @@ const Progress = ({ tracks, getTrack }: any) => {
   }, [state.playbackState]);
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 w-full">
+    <div className="flex flex-col justify-center items-center gap-2 w-full">
       <Tile
         artwork={state?.currentTrack?.artwork?.[0]?.src}
         title={state.currentTrack.title}
@@ -116,9 +120,9 @@ const Progress = ({ tracks, getTrack }: any) => {
         className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
-      <div className="w-full">
-        {/* <NewEq instance={instance} bands={rockEQSettings} audio={audio} /> */}
-        <Equalizer instance={instance} />
+      <div className="">
+        <NewEq instance={instance} audio={audio} bands={undefined} />
+        {/* <Equalizer instance={instance} play={playAudio} /> */}
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <p>State : {state.playbackState}</p>

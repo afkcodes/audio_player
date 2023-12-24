@@ -65,22 +65,21 @@ const createEqualizer = (
   return equalizerBands;
 };
 
-const Equalizer = ({ instance }: any) => {
+const Equalizer = ({ instance, play }: any) => {
   const [vol, setVol] = useState(50);
   const [equalizerBands, setEqualizerBands] = useState<any>([]);
   const [isSetupDone, setIsSetupDone] = useState(false);
 
-  useEffect(() => {
-    document.body.addEventListener("click", () => {
-      if (!isSetupDone && !done) {
-        initWebAudio();
-        const bands = createEqualizer(audioContext, instance);
-        console.log(bands);
-        setEqualizerBands(bands);
-        setIsSetupDone(true);
-      }
-    });
-  }, [instance]);
+  const playAudio = () => {
+    if (!isSetupDone && !done) {
+      initWebAudio();
+      const bands = createEqualizer(audioContext, instance);
+      console.log(bands);
+      setEqualizerBands(bands);
+      setIsSetupDone(true);
+      play();
+    }
+  };
 
   useEffect(() => {
     if (instance) {
@@ -98,7 +97,7 @@ const Equalizer = ({ instance }: any) => {
   );
 
   return (
-    <div className="flex justify-center flex-col w-full relative">
+    <div className="flex justify-center items-center gap-8 flex-col w-full relative">
       <p>VOLUME</p>
       <input
         type="range"
@@ -106,6 +105,13 @@ const Equalizer = ({ instance }: any) => {
         min={0}
         value={vol}
         onChange={(e) => setVol(Number(e.target.value))}
+      />
+
+      <input
+        type="button"
+        value="ADD NEW AND PLAY"
+        onClick={playAudio}
+        className="bg-slate-700 px-4 py-2 text-white rounded-md cursor-pointer"
       />
 
       <div className="flex w-full h-60 gap-12 relative items-center">
